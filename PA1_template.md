@@ -1,10 +1,4 @@
----
-title: 'Reproducible Research: Peer Assessment 1'
-output:
-  html_document:
-    keep_md: yes
-  pdf_document: default
----
+# Reproducible Research: Peer Assessment 1
 ### Introduction
 This document contains my solution for 'Course Project 1' of the 'Reproducible Research' by Johns Hopkins University on the Coursera platform. This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
@@ -15,7 +9,8 @@ While creating this document I assumed that the `activity.zip` file, needed to f
 ### Loading Libraries
 The first thing the script does is to load the additional three libraries needed for the rest of the R script to work properly.
 
-```{r message=FALSE}
+
+```r
 library(dplyr)
 library(data.table)
 library(lattice)
@@ -23,7 +18,8 @@ library(lattice)
 
 
 ### Loading and preprocessing the data
-```{r}
+
+```r
 # unzip the activity.zip file
 unzip("activity.zip")
 
@@ -36,14 +32,16 @@ data$date <- as.Date(data$date, format = "%Y-%m-%d")
 
 ### What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 sum.steps <-    subset(data, select = c(steps, date)) %>%  
                 group_by(date) %>% 
                 summarise(total.steps = sum(steps))
 ```
 
 
-```{r}
+
+```r
 hist(sum.steps$total.steps, 
      breaks = 10, 
      col="#4CACD6", 
@@ -57,16 +55,29 @@ hist(sum.steps$total.steps,
          )
 ```
 
-```{r}
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
+
+
+```r
 cat("Mean: ", mean(sum.steps$total.steps, na.rm = TRUE))
 ```
 
-```{r}
+```
+## Mean:  10766.19
+```
+
+
+```r
 cat("Median: ", median(sum.steps$total.steps, na.rm = TRUE))
 ```
 
+```
+## Median:  10765
+```
+
 ### What is the average daily activity pattern?
-```{r}
+
+```r
 itv.steps <-   subset(data, select = c(steps, interval)) %>%  
                     group_by(interval) %>% 
                     summarise(average.steps = mean(steps, na.rm=TRUE))
@@ -75,15 +86,19 @@ max.steps <- max(itv.steps$average.steps)
 max.steps.itv <- as.numeric(itv.steps[itv.steps$average.steps == max.steps,1])
 ```
 
-```{r}
+
+```r
 with(itv.steps, plot(interval, average.steps, type="l", lwd = 2, col="#4CACD6"))
 
 abline(h = max.steps, lwd=1, lty=2, col="#666666")
 abline(v = max.steps.itv, lwd=1, lty=2, col="#666666")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)
+
 ### Imputing missing values
-```{r}
+
+```r
 sum.na = sum(is.na(data$steps))
 
 # Use mean for the interval if value for steps is missing (na)
@@ -96,15 +111,26 @@ sum.steps.imputed <- subset(data.imputed, select = c(steps, date)) %>%
     summarise(total.steps = sum(steps))
 ```
 
-```{r}
+
+```r
 cat("Mean: ", mean(sum.steps.imputed$total.steps))
 ```
 
-```{r}
+```
+## Mean:  10766.19
+```
+
+
+```r
 cat("Median: ", median(sum.steps.imputed$total.steps))
 ```
 
-```{r}
+```
+## Median:  10766.19
+```
+
+
+```r
 hist(sum.steps.imputed$total.steps, 
      breaks = 10, 
      col="#4CACD6", 
@@ -113,8 +139,11 @@ hist(sum.steps.imputed$total.steps,
 )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)
+
 ### Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 daytype <- ifelse(weekdays(data.imputed$date) %in% c("Saturday","Sunday"), "weekend", "weekday")
 
 data.imputed <- cbind(data.imputed, daytype)
@@ -124,7 +153,8 @@ itv.steps.imputed <-   subset(data.imputed, select = c(steps, interval, daytype)
     summarise(average.steps = mean(steps, na.rm=TRUE))
 ```
 
-```{r}
+
+```r
 xyplot(average.steps ~ interval | daytype, 
        itv.steps.imputed, 
        type = "l", 
@@ -134,3 +164,5 @@ xyplot(average.steps ~ interval | daytype,
        layout = c(1,2)
       )
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-14-1.png)
