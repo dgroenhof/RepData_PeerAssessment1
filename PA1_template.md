@@ -1,4 +1,5 @@
 # Reproducible Research: Peer Assessment 1
+
 ### Introduction
 This document contains my solution for 'Course Project 1' of the 'Reproducible Research' by Johns Hopkins University on the Coursera platform. This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
@@ -60,7 +61,7 @@ hist(sum.steps$total.steps,
          )
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 The mean of the total number of steps per day is calculated and displayed here:
 
@@ -119,7 +120,7 @@ abline(h = max.steps, lwd=1, lty=2, col="#666666")
 abline(v = max.steps.itv, lwd=1, lty=2, col="#666666")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
 
 ### Imputing missing values
 First we calculate and display the total number of missing values:
@@ -188,7 +189,7 @@ hist(sum.steps.imputed$total.steps,
      cex.lab = 1.0)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 To compare the differences between the datasets with missing data and with imputed data, we look at mean and median values in both datasets.
 
@@ -227,4 +228,4 @@ xyplot(average.steps ~ interval | daytype,
       )
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
